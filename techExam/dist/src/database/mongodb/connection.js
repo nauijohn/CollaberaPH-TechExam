@@ -13,15 +13,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Connection = void 0;
+const config_1 = __importDefault(require("config"));
 const mongoose_1 = __importDefault(require("mongoose"));
 class Connection {
     // public connection;
     connection() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                const db = config_1.default.get("DB");
+                console.log(db);
                 return yield new Promise((res, rej) => {
                     mongoose_1.default
-                        .connect("mongodb://localhost:27017/techexam")
+                        .connect(`${db}`)
                         .then((con) => res(con))
                         .catch((err) => {
                         if (err)

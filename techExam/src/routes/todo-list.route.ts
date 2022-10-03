@@ -35,10 +35,12 @@ export class TodoListRoute {
           //   throw new ErrorModel(500, "author_name is required");
           const response: TodoListPostResponseDto =
             await this.todoListController.todoListPost(params);
+          console.log("response: ", response);
           const payload: Payload = new Payload(
             response.statusCode,
             response.message
           );
+
           res.status(payload.statusCode).send(payload);
         } catch (err: any) {
           res.send(err);
@@ -51,7 +53,7 @@ export class TodoListRoute {
       async (req: express.Request, res: express.Response) => {
         try {
           const response = await this.todoListController.todoListGet();
-          const payload: Payload = new Payload(200, response);
+          const payload: Payload = new Payload(response.statusCode, response);
           res.status(payload.statusCode).send(payload.data);
         } catch (err: any) {
           res.send(err);
@@ -67,7 +69,7 @@ export class TodoListRoute {
           const response = await this.todoListController.todoListGetByTitle(
             title
           );
-          const payload: Payload = new Payload(200, response);
+          const payload: Payload = new Payload(response.statusCode, response);
           res.status(payload.statusCode).send(payload.data);
         } catch (err: any) {
           res.send(err);

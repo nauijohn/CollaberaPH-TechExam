@@ -13,7 +13,6 @@ export class TodoListSchema {
         type: Array,
         required: true,
       },
-      // timestamps: { createdAt: "created_at" },
     });
     this.todoListSchemaModel = mongoose.model("todoList", this.todoListSchema);
   }

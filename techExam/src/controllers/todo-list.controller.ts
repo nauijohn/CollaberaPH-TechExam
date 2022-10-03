@@ -21,7 +21,6 @@ export class TodoListController {
       const { title, list } = params;
       const TodoList = this.todoListSchema.todoListSchemaModel;
       const findTodoList = await TodoList.findOne({ title: title });
-      console.log("findTodoList", findTodoList);
       const response: TodoListPostResponseDto = new TodoListPostResponseDto();
       if (!findTodoList) {
         const todoList = new TodoList({
@@ -29,15 +28,13 @@ export class TodoListController {
           list: list,
         });
         const saveTodoList = await todoList.save();
-        console.log(saveTodoList);
         response.message = "Todo-list successfully saved!";
         response.statusCode = 200;
       } else {
         response.message = "There is already a todo-list with that title.";
         response.statusCode = 500;
-        throw response;
+        return response;
       }
-
       return response;
     } catch (err: any) {
       throw err;
@@ -78,7 +75,7 @@ export class TodoListController {
         response.statusCode = 200;
         response.data = todoLists;
       } else {
-        response.statusCode = 500;
+        response.statusCode = 404;
         response.data = "No todo-list with that title!";
       }
       return response;
@@ -107,7 +104,7 @@ export class TodoListController {
           response.message = "Delete failed!";
         }
       } else {
-        response.statusCode = 500;
+        response.statusCode = 404;
         response.message = "No todo-list with that title to be deleted!";
       }
 
@@ -139,7 +136,7 @@ export class TodoListController {
           response.message = "Update failed!";
         }
       } else {
-        response.statusCode = 500;
+        response.statusCode = 404;
         response.message = "No todo-list with that title to be updated!";
       }
       console.log("response", response);

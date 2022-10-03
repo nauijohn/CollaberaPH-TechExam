@@ -11,11 +11,14 @@ const ENV = process.env.NODE_ENV || "development";
 
 const mongodbConnection = new Connection();
 
-const server = async () => {
-  const mongoDb = await mongodbConnection.connection();
-  app.listen(PORT, () => {
-    console.log(`Express ${ENV} server listening on port ${PORT}`);
-  });
-};
+// const server = async () => {
+const mongdoDb = mongodbConnection.connection();
 
-server();
+const serve = app.listen(PORT, () => {
+  console.log(`Express ${ENV} server listening on port ${PORT}`);
+});
+// };
+
+// const serve = server();
+
+export { serve, mongdoDb };

@@ -26,7 +26,6 @@ class TodoListController {
                 const { title, list } = params;
                 const TodoList = this.todoListSchema.todoListSchemaModel;
                 const findTodoList = yield TodoList.findOne({ title: title });
-                console.log("findTodoList", findTodoList);
                 const response = new todo_list_post_response_1.TodoListPostResponseDto();
                 if (!findTodoList) {
                     const todoList = new TodoList({
@@ -34,14 +33,13 @@ class TodoListController {
                         list: list,
                     });
                     const saveTodoList = yield todoList.save();
-                    console.log(saveTodoList);
                     response.message = "Todo-list successfully saved!";
                     response.statusCode = 200;
                 }
                 else {
                     response.message = "There is already a todo-list with that title.";
                     response.statusCode = 500;
-                    throw response;
+                    return response;
                 }
                 return response;
             }
@@ -77,7 +75,7 @@ class TodoListController {
                     response.data = todoLists;
                 }
                 else {
-                    response.statusCode = 500;
+                    response.statusCode = 404;
                     response.data = "No todo-list with that title!";
                 }
                 return response;
@@ -106,7 +104,7 @@ class TodoListController {
                     }
                 }
                 else {
-                    response.statusCode = 500;
+                    response.statusCode = 404;
                     response.message = "No todo-list with that title to be deleted!";
                 }
                 return response;
@@ -135,7 +133,7 @@ class TodoListController {
                     }
                 }
                 else {
-                    response.statusCode = 500;
+                    response.statusCode = 404;
                     response.message = "No todo-list with that title to be updated!";
                 }
                 console.log("response", response);

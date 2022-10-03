@@ -37,6 +37,7 @@ class TodoListRoute {
                 // if (!author_name)
                 //   throw new ErrorModel(500, "author_name is required");
                 const response = yield this.todoListController.todoListPost(params);
+                console.log("response: ", response);
                 const payload = new payload_model_1.Payload(response.statusCode, response.message);
                 res.status(payload.statusCode).send(payload);
             }
@@ -47,7 +48,7 @@ class TodoListRoute {
         this.router.get("/todo", (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const response = yield this.todoListController.todoListGet();
-                const payload = new payload_model_1.Payload(200, response);
+                const payload = new payload_model_1.Payload(response.statusCode, response);
                 res.status(payload.statusCode).send(payload.data);
             }
             catch (err) {
@@ -58,7 +59,7 @@ class TodoListRoute {
             try {
                 const { title } = req.params;
                 const response = yield this.todoListController.todoListGetByTitle(title);
-                const payload = new payload_model_1.Payload(200, response);
+                const payload = new payload_model_1.Payload(response.statusCode, response);
                 res.status(payload.statusCode).send(payload.data);
             }
             catch (err) {
