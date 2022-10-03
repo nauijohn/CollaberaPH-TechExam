@@ -1,0 +1,239 @@
+openapi: 3.0.0
+info:
+  title: todo-list
+  version: 1.0.0
+  description: Provides data regarding the reports service application
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: Todo-list
+    description: CRUD Operation for Todo-List
+paths:
+  /todo/todo:
+    summary: todo-lists
+    description: todo-lists
+    get:
+      summary: Get all todo-lists
+      description: Get all todo-lists
+      operationId: todoListGet
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoListGet'
+              examples:
+                '200':
+                  value: |-
+                    {
+                        "statusCode": 200,
+                        "data": [
+                            {
+                                "title": "test1",
+                                "list": [
+                                    "test"
+                                ]
+                            },
+                            {
+                                "title": "test2",
+                                "list": [
+                                    "test"
+                                ]
+                            }
+                        ]
+                    }
+    post:
+      summary: Post todo-list data
+      description: Post todo-list data
+      operationId: todoListPost
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
+                  description: title of list
+                  type: string
+                list:
+                  description: value of list
+                  type: array
+                  items:
+                    type: string
+              required:
+                - title
+      responses:
+        '200':
+          description: Data posted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoListPost'
+              examples:
+                Data posted:
+                  value: |-
+                    {
+                        "statusCode": 200,
+                        "data": "Todo-list successfully saved!"
+                    }
+        '500':
+          description: Title already exists
+          content:
+            application/json:
+              examples:
+                Title already exists:
+                  value: |-
+                    {
+                        "statusCode": 500,
+                        "data": "There is already a todo-list with that title."
+                    }
+  /todo/todo/{title}:
+    summary: Get todo-list by title
+    description: Get todo-list by title
+    get:
+      summary: Get todo-list by title
+      description: Get todo-list by title
+      operationId: todoListGetByTitle
+      parameters:
+        - name: title
+          description: title of list
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoListGetByTitle'
+              examples:
+                '200':
+                  value: |-
+                    {
+                        "statusCode": 200,
+                        "data": {
+                            "title": "test1",
+                            "list": [
+                                "test"
+                            ]
+                        }
+                    }
+        '404':
+          description: Title not found
+          content:
+            application/json:
+              examples:
+                Title not found:
+                  value: |-
+                    {
+                        "statusCode": 404,
+                        "data": "No todo-list with that title!"
+                    }
+    put:
+      summary: Edit by title
+      description: Edit by title
+      operationId: todoListUpdateList
+      parameters:
+        - name: title
+          description: title of list
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                list:
+                  description: value of list
+                  type: array
+                  items:
+                    type: string
+      responses:
+        '200':
+          description: Update successful
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Update successful!:
+                  value: Update successful!
+        '404':
+          description: No title found
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                No title found:
+                  value: No todo-list with that title to be updated!
+    delete:
+      summary: Delete todo list by title
+      description: Delete todo list by title
+      operationId: todoListDelete
+      parameters:
+        - name: title
+          description: title of list
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Delete successful
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Delete successful:
+                  value: Delete successful!
+        '404':
+          description: No title found
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                No title found:
+                  value: No todo-list with that title to be deleted!
+components:
+  schemas:
+    TodoListGet:
+      description: Response of todoListGet
+      type: object
+      properties:
+        statusCode:
+          type: number
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              list:
+                type: array
+                items:
+                  type: string
+    TodoListPost:
+      description: Response of todoListPost
+      type: object
+      properties:
+        statusCode:
+          type: number
+        data:
+          type: string
+    TodoListGetByTitle:
+      description: Response of todoListGetByTitle
+      type: object
+      properties:
+        statusCode:
+          type: number
+        data:
+          type: object
+          properties:
+            title:
+              type: string
+            list:
+              type: array
+              items:
+                type: string
